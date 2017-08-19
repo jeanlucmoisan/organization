@@ -1,8 +1,7 @@
 'use strict'
 
 const routes = [
-  require('./routes/notificationsetup'),
-  require('./routes/workflowsetup')
+  require('./routes/department')
 ];
 
 

@@ -23,9 +23,6 @@ app.use((req, res, next) => {
 
 router(app, db);
 
-//drop and resync with { force: true }
-db.sequelize.sync({ force: true }).then(() => {
-  app.listen(PORT, () => {
-    console.log('Express listening on port:', PORT);
-  });
+app.listen(PORT, () => {
+	console.log('Express listening on port:', PORT);
 });

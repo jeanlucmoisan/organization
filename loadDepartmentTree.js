@@ -10,20 +10,6 @@ const db = require('./server/config/db.js'),
   Department = require('./server/models/department'),
   Edge = require('./server/models/edge');
 
-async function erase() {
-	try {
-		const departments = db.collection('department');
-		const edges = db.collection('departmentContains');
-		await departments.truncate();
-		await edges.truncate();
-		console.log('collections emptied');
-		return true;		
-	} catch(e) {
-		console.log(e);
-		return false;
-	}
-}
-
 function readAndLoad() {
 	var arrayDept = [];
 	var arrayEdges = [];
