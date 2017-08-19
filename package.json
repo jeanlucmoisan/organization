@@ -1,0 +1,25 @@
+{
+  "name": "organization",
+  "version": "1.0.0",
+  "description": "\"# Organization\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeanlucmoisan/organization.git"
+  },
+  "author": "Jean-luc Moisan",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/jeanlucmoisan/organization/issues"
+  },
+  "homepage": "https://github.com/jeanlucmoisan/organization#readme",
+  "dependencies": {
+    "arangojs": "^5.7.0",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "morgan": "^1.8.2"
+  }
+}
