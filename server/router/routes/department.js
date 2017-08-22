@@ -37,8 +37,7 @@ module.exports = (app, db) => {
 		try {
 			// department sent in body may have an array of {_from,_to} called "edges" to feed the edges
 			// by convention value of 1 is assigned to the new object
-			// TODO assign each property to newDept
-			const newDept = req.body;
+			const newDept = req.body.department;
 			var department = new Department(newDept);
 			var feedbackDepartment = await deptColl.save(department);
 			console.log('department '+JSON.stringify(feedbackDepartment)+' has been created');
