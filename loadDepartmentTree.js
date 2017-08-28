@@ -39,7 +39,7 @@ function readAndLoad() {
 	//delete the edge content and bulk import the collection
 	edgeReader.on('close',async function () {
 		console.log(arrayEdges.length+' edges loaded');
-		const edges = db.edgeCollection('departmentContains');
+		const edges = db.edgeCollection('departmentContainedBy');
 		await edges.truncate();
 		console.log('edges emptied');
 		//insert the edges			

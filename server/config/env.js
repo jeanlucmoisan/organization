@@ -2,9 +2,9 @@
 
 const env = {
   PORT: process.env.PORT || 8080,
-  DATABASE_URL: process.env.DATABASE_URL || '192.168.99.100',
+  DATABASE_URL: process.env.DATABASE_URL || 'localhost',
   DATABASE_NAME: process.env.DATABASE_NAME || 'organization',
-  DATABASE_HOST: process.env.DATABASE_HOST || '192.168.99.100',
+  DATABASE_HOST: process.env.DATABASE_HOST || 'localhost',
   DATABASE_USERNAME: process.env.DATABASE_USERNAME || 'jeanluc',
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || 'jeanluc',
   DATABASE_PORT: process.env.DATABASE_PORT || 8529,
