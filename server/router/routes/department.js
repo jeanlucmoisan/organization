@@ -6,14 +6,40 @@
 module.exports = (app, db) => {
 
 	const deptColl = db.collection('department');
-	const edges = db.edgeCollection('departmentContains');
+	const edgeColl = db.edgeCollection('departmentContainedBy');
 	const Department = require('./../../models/department');
+	const Edge = require('./../../models/edge');
+
 	// GET all departments
 	app.get('/departments', async (req, res) => {
 		try {
 			var deptCursor = await deptColl.all();
 			var departments = await deptCursor.all();
 			res.json(departments);
+		} catch(e) {
+			res.status(500);
+			res.render('error',{error:e});
+		}
+	});
+
+	// GET all departments links
+	app.get('/departmentLinks', async (req, res) => {
+		try {
+			var edgeCursor = await edgeColl.all();
+			var edges = await edgeCursor.all().then((edges)=>{
+				var links = [];
+				for (i=0;i<edges.length;i++) {
+					var link = {};
+					link.source = edges[i]._from;
+					//link.source.replace('department\/','');
+					link.target = edges[i]._to;
+					//link.target.replace('department\/','');
+					links.push(link);
+				}
+				res.json(links);
+			});
+			/*	
+				res.json(edges);*/
 		} catch(e) {
 			res.status(500);
 			res.render('error',{error:e});
