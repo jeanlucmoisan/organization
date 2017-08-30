@@ -26,14 +26,14 @@ module.exports = (app, db) => {
 	app.get('/departmentLinks', async (req, res) => {
 		try {
 			var edgeCursor = await edgeColl.all();
-			var edges = await edgeCursor.all().then((edges)=>{
-				var links = [];
-				for (i=0;i<edges.length;i++) {
+			var links = [];
+			var edges = await edgeCursor.all().then((results)=>{
+				for (var i=0;i<results.length;i++) {
 					var link = {};
-					link.source = edges[i]._from;
-					//link.source.replace('department\/','');
-					link.target = edges[i]._to;
-					//link.target.replace('department\/','');
+					link.source = results[i]._from;
+					link.source = link.source.replace('department\/','');
+					link.target = results[i]._to;
+					link.target = link.target.replace('department\/','');
 					links.push(link);
 				}
 				res.json(links);
