@@ -2,6 +2,7 @@
 
 // TODO add tenant management
 // TODO add logging management
+// TODO sanitize params
 
 module.exports = (app, db) => {
 
@@ -60,16 +61,19 @@ module.exports = (app, db) => {
 
 	// GET departments by property
 	app.get('/department/property/:name/:value', async (req, res) => {
-		const property = req.params.property;
-		const value = req.params.value;
-		try {
-			var department = await db._query(aql`FOR doc IN ${deptColl} FILTER doc.${property}==${value} RETURN doc`).toArray();
-			res.json(department);
-		} catch(e) {
-			res.status(500);
-			res.render('error',{error:e});
+		const property = req.params;
+		console.log(JSON.stringify(property));
+		if (property.name == "name" || property.name == "topDepartment") {
+			const query = {
+				query: 'FOR doc IN department FILTER doc.@propName == @propValue RETURN doc',
+				bindVars: {propName:property.name, propValue:property.value}
+			};
+			var deptCursor = await db.query(query);
+			var departments = await deptCursor.all();
 		}
+		res.json(departments);
 	});
+
 	// POST single department
 	app.post('/department', async (req, res) => {
 		try {
