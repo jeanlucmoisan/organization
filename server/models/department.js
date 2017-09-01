@@ -7,7 +7,8 @@
 			this.name = object.name,
 			this.collaborators = object.collaborators,
 			this.manager = object.manager,
-			this.addressID = object.addressID
+			this.addressID = object.addressID,
+			this.topDepartment = object.topDepartment
 	  }
   }
 module.exports = Department;

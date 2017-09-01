@@ -58,6 +58,18 @@ module.exports = (app, db) => {
 		}
 	});
 
+	// GET departments by property
+	app.get('/department/property/:name/:value', async (req, res) => {
+		const property = req.params.property;
+		const value = req.params.value;
+		try {
+			var department = await db._query(aql`FOR doc IN ${deptColl} FILTER doc.${property}==${value} RETURN doc`).toArray();
+			res.json(department);
+		} catch(e) {
+			res.status(500);
+			res.render('error',{error:e});
+		}
+	});
 	// POST single department
 	app.post('/department', async (req, res) => {
 		try {
