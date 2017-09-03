@@ -74,6 +74,49 @@ module.exports = (app, db) => {
 		res.json(departments);
 	});
 
+	// GET department tree branch by node and number of levels
+	app.get('/department/tree/:nodekey/:levels', async (req, res) => {
+		const property = req.params;
+		property.nodeid = property.nodekey ? 'department/'+property.nodekey : null;
+		console.log(JSON.stringify(property));
+		const graph = db.graph('departmentTree');
+		const options = {
+			maxDepth: property.levels,
+			direction:'inbound'
+		};
+		const result = await graph.traversal(property.nodeid,options);
+		const vertices = result.visited.vertices;
+		const rawEdges = [];
+		const links = [];
+		// resulting paths is an array of {edges,vertices}
+		// we must cleanup the array to get unique edges
+		const paths = result.visited.paths;
+		for (var i=0;i<paths.length;i++) {
+			var currentEdges = paths[i].edges;
+			for (var j=0;j<currentEdges.length;j++) {
+				var edgeFound = false;
+				for (var k=0;k<rawEdges.length;k++) {
+					if (currentEdges[j]._key===rawEdges[k]._key) {
+						edgeFound = true;
+					}
+				}
+				if (!edgeFound) {
+					rawEdges.push(currentEdges[j]);
+				}
+			}
+		}
+		for (var i=0;i<rawEdges.length;i++) {
+			var link = {};
+			link.source = rawEdges[i]._from;
+			link.source = link.source.replace('department\/','');
+			link.target = rawEdges[i]._to;
+			link.target = link.target.replace('department\/','');
+			links.push(link);
+		}
+		const response = {vertices:vertices,links:links};
+		res.json(response);
+	});
+
 	// POST single department
 	app.post('/department', async (req, res) => {
 		try {
