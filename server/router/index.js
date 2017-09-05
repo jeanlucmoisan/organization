@@ -1,7 +1,8 @@
 'use strict'
 
 const routes = [
-  require('./routes/department')
+  require('./routes/department'),
+  require('./routes/location')
 ];
 
 
