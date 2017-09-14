@@ -7,8 +7,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}\\server.js",
+            "name": "Launch Program via NPM",
+            "port": 9229,
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script","debug"
+            ],
             "skipFiles": [
                 "${workspaceRoot}/node_modules/**/*.js",
                 "${workspaceRoot}/lib/**/*.js"

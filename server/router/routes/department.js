@@ -47,29 +47,31 @@ module.exports = (app, db) => {
 		}
 	});
 
-	// GET one department by id
-	app.get('/department/:id', async (req, res) => {
-		const id = req.params.id;
-		try {
-			var department = await deptColl.document(id);
-			res.json(department);
-		} catch(e) {
-			res.status(500);
-			res.render('error',{error:e});
-		}
-	});
-
 	// GET departments by property
 	app.get('/department/property/:name/:value', async (req, res) => {
 		const property = req.params;
-		console.log(JSON.stringify(property));
-		if (property.name == "name" || property.name == "topDepartment") {
-			const query = {
+		console.log('Department API - GET property with '+JSON.stringify(property));
+		if (property.name == "name" || property.name == "topDepartment" || property.name == "id") {
+			if (property.name == "id") property.name = "_key";
+			var query = {
 				query: 'FOR doc IN department FILTER doc.@propName == @propValue RETURN doc',
 				bindVars: {propName:property.name, propValue:property.value}
 			};
 			var deptCursor = await db.query(query);
 			var departments = await deptCursor.all();
+			for (let i=0;i<departments.length;i++) {
+				query = {
+					query: 'FOR doc IN departmentContainedBy FILTER doc._from == @key RETURN doc',
+					bindVars: { key: departments[i]._id }
+				};
+				var linkCursor = await db.query(query);
+				var attachedTo = await linkCursor.all();
+				if (attachedTo) {
+					departments[i].attachedTo = attachedTo[0]._to;
+				} else {
+					departments[i].attachedTo = '';
+				}
+			}
 		}
 		res.json(departments);
 	});
